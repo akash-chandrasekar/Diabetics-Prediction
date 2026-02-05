@@ -1,30 +1,22 @@
 import streamlit as st
+import joblib
 import numpy as np
-from xgboost import XGBClassifier
 
-# Load model
-model = XGBClassifier()
-model.load_model("xgb_model.joblib")
+model = joblib.load("xgb_model.joblib")
 
-st.title("🩺 Diabetes Prediction App")
+st.title("Diabetes Prediction")
 
-st.write("Enter patient details below:")
+preg = st.number_input("Pregnancies")
+glucose = st.number_input("Glucose")
+bp = st.number_input("Blood Pressure")
+bmi = st.number_input("BMI")
+age = st.number_input("Age")
 
-# User Inputs
-pregnancies = st.number_input("Pregnancies", 0, 20)
-glucose = st.number_input("Glucose Level", 0, 300)
-bp = st.number_input("Blood Pressure", 0, 150)
-bmi = st.number_input("BMI", 0.0, 70.0)
-age = st.number_input("Age", 0, 100)
+if st.button("Predict"):
+    input_data = np.array([[preg, glucose, bp, bmi, age]])
+    pred = model.predict(input_data)
 
-# Prediction Button
-if st.button("Predict Diabetes"):
-
-    input_data = np.array([[pregnancies, glucose, bp, bmi, age]])
-
-    prediction = model.predict(input_data)
-
-    if prediction[0] == 1:
-        st.error("⚠️ High Risk of Diabetes")
+    if pred[0] == 1:
+        st.error("High Risk of Diabetes")
     else:
-        st.success("✅ Low Risk of Diabetes")
+        st.success("Low Risk")
