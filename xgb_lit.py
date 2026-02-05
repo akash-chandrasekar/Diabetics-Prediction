@@ -4,7 +4,7 @@ from xgboost import XGBClassifier
 
 # Load model
 model = XGBClassifier()
-model.load_model("diabetes_xgb.json")
+model.load_model("xgb_model.joblib")
 
 st.title("🩺 Diabetes Prediction App")
 
